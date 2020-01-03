@@ -1,5 +1,5 @@
 import React from "react";
-import "./DropList.css";
+import "./DropList.sass";
 
 function DropListItem({ alias, value, onClick, onChange }) {
   return (
