@@ -1,16 +1,13 @@
-export const actionType = {
-    INCREMENT: 0,
-    DECREMENT: 1
-}
+export const actionType = { INCREMENT: 0, DECREMENT: 1 };
 
 
-export function increment() {
+export function increment () {
     return {
         type: actionType.INCREMENT,
     }
 }
 
-export function decrement() {
+export function decrement () {
     return {
         type: actionType.DECREMENT
     }

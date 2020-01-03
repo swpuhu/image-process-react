@@ -1,17 +1,18 @@
-import {actionType} from './action'
-
+import { actionType } from './action';
 const initialState = {
     count: 0
 }
 
 
-function app(state = initialState, action) {
+function app (state = initialState, action) {
     switch (action.type) {
         case actionType.INCREMENT:
             state.count++;
-            return {...state, ...{
-                count: state.count
-            }};
+            return {
+                ...state, ...{
+                    count: state.count
+                }
+            };
             break;
         default:
             return state;

@@ -1,14 +1,14 @@
 import React from 'react';
 import store from '../redux/store';
-import {increment} from '../redux/action';
+import { increment } from '../redux/action';
 import { connect } from 'react-redux';
 
 
-function Count({count, click}) {
+function Count ({ count, click }) {
     return (
         <div>
-            <button onClick={click}>incremnet</button>
-            {count}
+            <button onClick={ click }>incremnet</button>
+            { count }
         </div>
 
     )
@@ -27,7 +27,7 @@ const mapDispatchProps = (dispatch) => {
     return {
         click: () => {
             dispatch(increment());
-        } 
+        }
     }
 };
 
