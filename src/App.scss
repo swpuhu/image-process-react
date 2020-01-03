@@ -1,0 +1,76 @@
+@import './style/variables.scss';
+    
+    
+html, body {
+    width: 100%;
+    background-color: $backgroundColor-main;
+    color: $fontColor-main;
+}
+
+.flex {
+    display: flex;
+}
+
+.header,
+.footer,
+.main,
+.left,
+.right {
+    position: absolute;
+}
+
+
+$top: 30px;
+$left: 150px;
+$right: 250px;
+$bottom: 30px;
+
+.header {
+    width: 100%;
+    height: $top;
+    line-height: $top;
+    border-bottom: 1px solid $borderColor-main;
+}
+
+.footer {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: $bottom;
+    line-height: $bottom;
+    border-top: 1px solid $borderColor-main;
+}
+
+
+.left {
+    left: 0;
+    top: $top;
+    bottom: $bottom;
+    width: $left;
+    border-right: 1px solid $borderColor-main;
+}
+
+.right {
+    right: 0;
+    top: $top;
+    bottom: $bottom;
+    width: $right;
+    border-left: 1px solid $borderColor-main;
+}
+
+
+.main {
+    top: $top;
+    bottom: $bottom;
+    left: $left;
+    right: $right;
+    .canvas {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        box-shadow: 0 0 5px 1px #000;
+    }
+}

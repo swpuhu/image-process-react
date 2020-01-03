@@ -1,14 +1,16 @@
-export const actionType = { INCREMENT: 0, DECREMENT: 1 };
-
-
-export function increment () {
-    return {
-        type: actionType.INCREMENT,
-    }
+export const ActionType = {
+    INIT: 'init',
+    ADD_LAYER: 'addLayer'
 }
 
-export function decrement () {
+
+export function init(width, height, zoom) {
     return {
-        type: actionType.DECREMENT
+        type: ActionType.INIT,
+        payload: {
+            width,
+            height,
+            zoom
+        }
     }
 }

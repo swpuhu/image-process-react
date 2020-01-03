@@ -1,22 +1,34 @@
-import { actionType } from './action';
+import { ActionType } from './action';
+import { combineReducers } from 'redux';
+
 const initialState = {
-    count: 0
+    width: undefined,
+    height: undefined,
+    zoom: 1,
 }
 
-
-function app (state = initialState, action) {
-    switch (action.type) {
-        case actionType.INCREMENT:
-            state.count++;
+function init(state = initialState, action) {
+    switch(action.type) {
+        case ActionType.INIT:
             return {
-                ...state, ...{
-                    count: state.count
-                }
-            };
-            break;
+                ...state,
+                width: action.payload.width,
+                height: action.payload.height,
+                zoom: action.payload.zoom,
+            }
         default:
             return state;
     }
 }
 
-export default app;
+function layers(state = [], action) {
+    switch(action.type) {
+        default: 
+            return state;
+    }
+}
+
+export default combineReducers({
+    init,
+    layers
+});

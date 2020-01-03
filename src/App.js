@@ -1,21 +1,21 @@
 import React from 'react';
-import './App.css';
+import './App.scss';
 import { Provider } from 'react-redux';
 import store from './redux/store';
-import Count from './components/Count';
-import DropList from './components/DropList/DropList';
-
+import Header from './container/Header';
+import Left from './container/Left';
+import Main from './container/Main';
+import Right from './container/Right';
+import Footer from './container/Footer';
 function App () {
     return (
         <Provider store={ store }>
             <div className="App">
-                <Count />
-                <DropList list={
-                    [
-                        { alias: 'hello', value: 'test' },
-                        { alias: 'world', value: 'test2' }
-                    ]
-                } />
+                <Header/>
+                <Left/>
+                <Main/>
+                <Right/>
+                <Footer/>
             </div>
         </Provider>
     );
