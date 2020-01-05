@@ -8,7 +8,7 @@ import Main from './container/Main';
 import Right from './container/Right';
 import Footer from './container/Footer';
 import util from './util/util';
-import {init} from './redux/action';
+import * as actions from './redux/action';
 class App extends React.Component {
     constructor() {
         super();
@@ -20,10 +20,9 @@ class App extends React.Component {
         };
         document.ondrop = (e) => {
             e.preventDefault();
-            console.log(e);
             let files = e.dataTransfer.files;
             if (files.length) {
-                util.openFiles(store, files, init);
+                util.openFiles(store, files, actions);
             }
         }
     }

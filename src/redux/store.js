@@ -3,6 +3,5 @@ import reducer from './reducer';
 
 
 let store = createStore(reducer);
-
-console.log(store);
+window.store = store;
 export default store;

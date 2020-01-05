@@ -8,6 +8,7 @@ class Canvas extends React.Component {
         super(props);
         this.canvas = React.createRef();
         this.state = store.getState();
+        this.layers = [];
     }
 
 
@@ -17,6 +18,12 @@ class Canvas extends React.Component {
     }
 
     componentWillUnmount() {
+
+    }
+
+    componentDidUpdate() {
+        
+        this.layers = store.getState().layers;
 
     }
 
@@ -38,7 +45,8 @@ const mapStateToProps = (state) => {
     return {
         width: state.init.width,
         height: state.init.height,
-        zoom: state.init.zoom
+        zoom: state.init.zoom,
+        layers: state.layers
     }
 }
 

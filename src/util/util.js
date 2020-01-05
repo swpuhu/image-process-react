@@ -13,7 +13,7 @@ const generateStamp = (function () {
     let canvas = document.createElement('canvas');
     let cacheWidth, cacheHeight;
     let context = canvas.getContext('2d');
-    return function (image, width = 80, height = 50) {    
+    return function (image, width = 80, height = 50) {
         if (width !== cacheWidth || height !== cacheHeight) {
             cacheWidth = width;
             cacheHeight = height;
@@ -74,7 +74,7 @@ function loadImage(src) {
  * @param {number} r 弧度 
  */
 function r2d(r) {
-    return r  / Math.PI * 180;
+    return r / Math.PI * 180;
 }
 
 /**
@@ -153,7 +153,7 @@ function autoAdaption(width, height, containerWidth, containerHeight) {
         // No Adaptione: 
         style = {
             x1: (containerWidth - width) / 2,
-            y1: (containerHeight - height ) / 2,        
+            y1: (containerHeight - height) / 2,
 
             x2: (containerWidth + width) / 2,
             y2: (containerHeight - height) / 2,
@@ -163,7 +163,7 @@ function autoAdaption(width, height, containerWidth, containerHeight) {
 
             x4: (containerWidth - width) / 2,
             y4: (containerHeight + height) / 2,
-            
+
             rotate: 0
         }
     } else if (aspect >= containerAspect) {
@@ -180,7 +180,7 @@ function autoAdaption(width, height, containerWidth, containerHeight) {
 
             x4: 0,
             y4: (containerHeight + (containerWidth / aspect)) / 2,
-            
+
             rotate: 0
         }
 
@@ -201,7 +201,7 @@ function autoAdaption(width, height, containerWidth, containerHeight) {
         }
     }
     return style;
-    
+
 }
 
 
@@ -215,27 +215,74 @@ function clamp(x, min, max) {
 }
 
 
-function openFiles(store, files, init) {
-    let first = true;
-    for (let file of files) {
-        let url = URL.createObjectURL(file);
-        let image = new Image();
-        image.onload = function () {
-            if (first) {
-                let main = document.querySelector('.main');
-                if (main) {
-                    let domWidth = main.offsetWidth - 50;
-                    let domHeight = main.offsetHeight - 50;
-                    let zoomX = domWidth / image.width;
-                    let zoomY = domHeight / image.height;
-                    store.dispatch(init(image.width, image.height, clamp(Math.min(zoomX, zoomY), 0, 1)));
-                    first = false;
-                }
-            }
-            URL.revokeObjectURL(url);
-        }
-        image.src = url;
+function loadImages(srcs) {
+    let promises = [];
+    for (let src of srcs) {
+        promises.push(loadImage);
     }
+
+    return promises.all((images) => {
+        return images;
+    })
+
+}
+
+async function openFiles(store, files, actions) {
+    let first = true;
+    for (let i = 0; i < files.length; i++) {
+        let state = store.getState();
+        let file = files[i];
+        let url = URL.createObjectURL(file);
+        let image = await loadImage(url);
+        URL.revokeObjectURL(url);
+        store.dispatch(actions.addLayer());
+        if (i === 0 && !state.init.width && !state.init.height) {
+            let main = document.querySelector('.main');
+            if (main) {
+                let domWidth = main.offsetWidth - 50;
+                let domHeight = main.offsetHeight - 50;
+                let zoomX = domWidth / image.width;
+                let zoomY = domHeight / image.height;
+                store.dispatch(actions.init(image.width, image.height, clamp(Math.min(zoomX, zoomY), 0, 1)));
+            }
+            
+        } 
+        if (i === files.length - 1) {
+            let state = store.getState();
+            let uuid = state.layers[state.layers.length - 1].id;
+            store.dispatch(actions.setCurrentLayer(uuid));
+        }
+    }
+}
+
+
+function uuid(len = 16, radix = 16) {
+    var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+    var uuid = [], i;
+    radix = radix || chars.length;
+
+    if (len) {
+        // Compact form
+        for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix];
+    } else {
+        // rfc4122, version 4 form
+        var r;
+
+        // rfc4122 requires these characters
+        uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+        uuid[14] = '4';
+
+        // Fill in random data.  At i==19 set the high bits of clock sequence as
+        // per rfc4122, sec. 4.1.5
+        for (i = 0; i < 36; i++) {
+            if (!uuid[i]) {
+                r = 0 | Math.random() * 16;
+                uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+            }
+        }
+    }
+
+    return uuid.join('');
 }
 
 export default {
@@ -244,6 +291,7 @@ export default {
     deletePostfix,
     downloadBase64,
     loadImage,
+    loadImages,
     r2d,
     d2r,
     throttle,
@@ -251,5 +299,6 @@ export default {
     deepCopy,
     autoAdaption,
     clamp,
-    openFiles
+    openFiles,
+    uuid
 }

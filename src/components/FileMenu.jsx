@@ -1,7 +1,7 @@
 import React from 'react';
 import DropList from './DropList/DropList';
 import store from '../redux/store';
-import {init} from '../redux/action';
+import * as actions from '../redux/action';
 import util from '../util/util';
 
 class FileMenu extends React.Component {
@@ -15,7 +15,7 @@ class FileMenu extends React.Component {
         this.input.multiple = true;
         let that = this;
         this.input.onchange = function () {
-            util.openFiles(store, this.files, init);
+            util.openFiles(store, this.files, actions);
         }   
     }
 
