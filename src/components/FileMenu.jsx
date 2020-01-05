@@ -2,6 +2,7 @@ import React from 'react';
 import DropList from './DropList/DropList';
 import store from '../redux/store';
 import {init} from '../redux/action';
+import util from '../util/util';
 
 class FileMenu extends React.Component {
     constructor() {
@@ -14,24 +15,8 @@ class FileMenu extends React.Component {
         this.input.multiple = true;
         let that = this;
         this.input.onchange = function () {
-            that.openFiles(this.files);
+            util.openFiles(store, this.files, init);
         }   
-    }
-
-    openFiles(files) {
-        let first = true;
-        for (let file of files) {
-            let url = URL.createObjectURL(file);
-            let image = new Image();
-            image.onload = function () {
-                if (first) {
-                    store.dispatch(init(image.width, image.height, 1));
-                    first = false;
-                }
-                URL.revokeObjectURL(url);
-            }
-            image.src = url;
-        }
     }
 
     componentWillUnmount() {

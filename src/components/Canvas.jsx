@@ -1,6 +1,7 @@
 import React from 'react';
 import store from '../redux/store';
 import {connect} from 'react-redux';
+import WebGL from '../webgl/webgl';
 
 class Canvas extends React.Component {
     constructor(props) {
@@ -12,8 +13,7 @@ class Canvas extends React.Component {
 
     componentDidMount() {
         let canvas = this.canvas.current;
-        let gl = canvas.getContext('webgl');
-        console.log(gl);
+        this.renderContext = new WebGL(canvas);
     }
 
     componentWillUnmount() {
@@ -23,7 +23,9 @@ class Canvas extends React.Component {
     render() {
         return (
             <div className="canvas" style={{
-                display: this.props.width ? 'block' : 'none'
+                display: this.props.width ? 'block' : 'none',
+                width: this.props.width * this.props.zoom + 'px',
+                height: this.props.height * this.props.zoom + 'px',
             }}>
                 <canvas ref={this.canvas} width={this.props.width} height={this.props.height}></canvas>
             </div>
